@@ -9,4 +9,12 @@ spring:
     view:
       prefix: /
       suffix: .jsp
-
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://47.99.158.229:3306/shiro_springboot?characterEncoding=UTF-8
+    username: root
+    password: 123456
+mybatis:
+  type-aliases-package: zone.hfy.shirospringboot.entity
+  mapper-locations: classpath:mapper/*.xml

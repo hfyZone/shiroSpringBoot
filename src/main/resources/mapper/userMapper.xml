@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="zone.hfy.shirospringboot.mapper.IUserMapper">
+
+    <insert id="saveUser" parameterType="zone.hfy.shirospringboot.entity.User" useGeneratedKeys="true" keyProperty="id">
+        insert into t_user values(#{id},#{username},#{password},#{salt})
+    </insert>
+    <select id="findByUserName" resultType="zone.hfy.shirospringboot.entity.User">
+        select id,username,password,salt from t_user where username = #{username}
+    </select>
+
+</mapper>

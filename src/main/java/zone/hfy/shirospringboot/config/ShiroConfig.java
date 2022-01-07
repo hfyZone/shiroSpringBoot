@@ -1,5 +1,6 @@
 package zone.hfy.shirospringboot.config;
 
+import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.mgt.DefaultSecurityManager;
 import org.apache.shiro.realm.Realm;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
@@ -25,8 +26,11 @@ public class ShiroConfig {
         //配置系统受限资源
         //配置系统公共资源
         Map<String, String> map = new HashMap<String,String>();
-        //map.put("/**", "authc");//对所有页面加入认证
-        map.put("/index.jsp", "authc");//authc：请求此资源需要认证授权
+        map.put("/user/login","anon");//设置认证为公共资源
+        map.put("/user/register","anon");//设置注册为公共资源
+        map.put("/register.jsp", "anon");//放行页面
+        map.put("/**", "authc");//对所有页面接口加入认证
+        //map.put("/index.jsp", "authc");//authc：请求此资源需要认证授权
 
         shiroFilterFactoryBean.setFilterChainDefinitionMap(map);
         //跳转的默认认证界面路径
@@ -45,6 +49,10 @@ public class ShiroConfig {
     @Bean
     public Realm getRealm(){
         CustomerRealm customerRealm = new CustomerRealm();
+        HashedCredentialsMatcher hashedCredentialsMatcher = new HashedCredentialsMatcher();
+        hashedCredentialsMatcher.setHashAlgorithmName("MD5");
+        hashedCredentialsMatcher.setHashIterations(1024);
+        customerRealm.setCredentialsMatcher(hashedCredentialsMatcher);
         return customerRealm;
     }
 
