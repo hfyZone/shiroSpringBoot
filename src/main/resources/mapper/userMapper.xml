@@ -11,5 +11,34 @@
     <select id="findByUserName" resultType="zone.hfy.shirospringboot.entity.User">
         select id,username,password,salt from t_user where username = #{username}
     </select>
+    
+    <resultMap id="userMap" type="zone.hfy.shirospringboot.entity.User">
+        <id column="uid" property="id"></id>
+        <result column="username" property="username"></result>
+        <collection property="roles" javaType="list" ofType="zone.hfy.shirospringboot.entity.Role">
+            <id column="id" property="id"></id>
+            <result column="rname" property="name"></result>
+        </collection>
+    </resultMap>
+    <select id="findRolesByUserName" resultMap="userMap">
+        SELECT
+               u.id uid,
+               u.username,
+               r.id,
+               r.name rname
+        FROM t_user u
+            LEFT JOIN t_user_role ur
+            ON u.id = ur.userid
+            LEFT JOIN t_role r ON ur.roleid = r.id
+            WHERE u.username = #{username}
+    </select>
+    <select id="findPermsByRoleId" resultType="zone.hfy.shirospringboot.entity.Perms">
+        SELECT p.id,p.NAME,p.url,r.NAME
+        FROM t_role r
+                 LEFT JOIN t_role_perms rp
+                           ON r.id=rp.roleid
+                 LEFT JOIN t_perms p ON rp.permsid=p.id
+        WHERE r.id=#{id}
+    </select>
 
 </mapper>

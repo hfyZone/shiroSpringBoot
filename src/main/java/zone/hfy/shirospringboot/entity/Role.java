@@ -9,17 +9,17 @@ import java.util.List;
 
 /**
  * @author YoungNet
- * @date 2022/1/7 11:15
+ * @date 2022/1/10 10:53
  */
 @Data
 @Accessors(chain = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
-    private String  id;
-    private String username;
-    private String password;
-    private String salt;
+public class Role {
+    private String id;
+    private String name;
 
-    List<Role> roles;
+    //定义权限的集合
+    private List<Perms> perms;
+
 }

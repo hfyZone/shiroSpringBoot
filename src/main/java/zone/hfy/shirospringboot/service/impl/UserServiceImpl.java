@@ -4,10 +4,14 @@ import org.apache.shiro.crypto.hash.Md5Hash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import zone.hfy.shirospringboot.entity.Perms;
+import zone.hfy.shirospringboot.entity.Role;
 import zone.hfy.shirospringboot.entity.User;
 import zone.hfy.shirospringboot.mapper.IUserMapper;
 import zone.hfy.shirospringboot.service.IUserService;
 import zone.hfy.shirospringboot.utils.SaltUtils;
+
+import java.util.List;
 
 /**
  * @author YoungNet
@@ -34,5 +38,15 @@ public class UserServiceImpl implements IUserService {
     @Override
     public User findByUserName(String username) {
         return userMapper.findByUserName(username);
+    }
+
+    @Override
+    public User findRolesByUserName(String username) {
+        return userMapper.findRolesByUserName(username);
+    }
+
+    @Override
+    public List<Perms> findPermsByRoleId(String id) {
+        return userMapper.findPermsByRoleId(id);
     }
 }

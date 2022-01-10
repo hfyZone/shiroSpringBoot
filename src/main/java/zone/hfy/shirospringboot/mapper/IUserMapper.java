@@ -1,7 +1,11 @@
 package zone.hfy.shirospringboot.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
+import zone.hfy.shirospringboot.entity.Perms;
+import zone.hfy.shirospringboot.entity.Role;
 import zone.hfy.shirospringboot.entity.User;
+
+import java.util.List;
 
 /**
  * @author YoungNet
@@ -11,4 +15,6 @@ import zone.hfy.shirospringboot.entity.User;
 public interface IUserMapper {
     void saveUser(User user);
     User findByUserName(String username);
+    User findRolesByUserName(String username);
+    List<Perms> findPermsByRoleId(String id);
 }
