@@ -16,6 +16,7 @@ import zone.hfy.shirospringboot.entity.Perms;
 import zone.hfy.shirospringboot.entity.Role;
 import zone.hfy.shirospringboot.entity.User;
 import zone.hfy.shirospringboot.service.IUserService;
+import zone.hfy.shirospringboot.shiro.salt.MyByteSource;
 
 import java.util.Collection;
 import java.util.List;
@@ -65,7 +66,7 @@ public class CustomerRealm extends AuthorizingRealm {
         if(!ObjectUtils.isEmpty(user)){
             SimpleAuthenticationInfo simpleAuthenticationInfo = new SimpleAuthenticationInfo(user.getUsername(),
                     user.getPassword(),
-                    ByteSource.Util.bytes(user.getSalt()),
+                    new MyByteSource(user.getSalt()),
                     this.getName());
             return simpleAuthenticationInfo;
         }

@@ -1,12 +1,14 @@
 package zone.hfy.shirospringboot.config;
 
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
+import org.apache.shiro.cache.ehcache.EhCacheManager;
 import org.apache.shiro.mgt.DefaultSecurityManager;
 import org.apache.shiro.realm.Realm;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import zone.hfy.shirospringboot.shiro.cache.RedisCacheManager;
 import zone.hfy.shirospringboot.shiro.realms.CustomerRealm;
 
 import java.util.HashMap;
@@ -53,6 +55,13 @@ public class ShiroConfig {
         hashedCredentialsMatcher.setHashAlgorithmName("MD5");
         hashedCredentialsMatcher.setHashIterations(1024);
         customerRealm.setCredentialsMatcher(hashedCredentialsMatcher);
+
+        customerRealm.setCacheManager(new RedisCacheManager());
+        customerRealm.setCachingEnabled(true);//开启全局缓存
+        customerRealm.setAuthenticationCachingEnabled(true);//认证缓存
+        customerRealm.setAuthenticationCacheName("authenticationCache");//默认名称：realm.authentication
+        customerRealm.setAuthorizationCachingEnabled(true);//授权缓存
+        customerRealm.setAuthorizationCacheName("authorizationCache");
         return customerRealm;
     }
 
