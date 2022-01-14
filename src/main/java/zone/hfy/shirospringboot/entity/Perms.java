@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
+import java.io.Serializable;
+
 /**
  * @author YoungNet
  * @date 2022/1/10 10:53
@@ -13,7 +15,7 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class Perms {
+public class Perms implements Serializable {
     private String id;
     private String name;
     private String url;

@@ -31,6 +31,7 @@ public class ShiroConfig {
         map.put("/user/login","anon");//设置认证为公共资源
         map.put("/user/register","anon");//设置注册为公共资源
         map.put("/register.jsp", "anon");//放行页面
+        map.put("/user/getImage", "anon");//放行验证码
         map.put("/**", "authc");//对所有页面接口加入认证
         //map.put("/index.jsp", "authc");//authc：请求此资源需要认证授权
 

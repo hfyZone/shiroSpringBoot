@@ -11,6 +11,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import zone.hfy.shirospringboot.entity.User;
 import zone.hfy.shirospringboot.service.IUserService;
+import zone.hfy.shirospringboot.utils.VerifyCodeUtils;
+
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
 
 /**
  * @author YoungNet
@@ -21,6 +27,19 @@ import zone.hfy.shirospringboot.service.IUserService;
 public class UserController {
     @Autowired
     IUserService userService;
+    /**
+     * 验证码
+     * */
+    @RequestMapping("getImage")
+    public void getImage(HttpSession session, HttpServletResponse response) throws IOException {
+        //生成验证码
+        String code = VerifyCodeUtils.generateVerifyCode(4);
+        session.setAttribute("code", code);
+        ServletOutputStream os = response.getOutputStream();
+        response.setContentType("image/png");
+        VerifyCodeUtils.outputImage(220, 60, os, code);
+
+    }
 
     /**
      * 退出登录
@@ -33,13 +52,18 @@ public class UserController {
     }
 
     @RequestMapping("/login")
-    public String login(String username, String password){
-        //获取主体对象
-        Subject subject = SecurityUtils.getSubject();
+    public String login(String username, String password, String code, HttpSession session){
+        String code1 = (String) session.getAttribute("code");
         try{
-            subject.login(new UsernamePasswordToken(username, password));
-            return "redirect:/index.jsp";
-        } catch (UnknownAccountException e) {
+            if(code1.equalsIgnoreCase(code)){
+                //获取主体对象
+                Subject subject = SecurityUtils.getSubject();
+                subject.login(new UsernamePasswordToken(username, password));
+                return "redirect:/index.jsp";
+            }else{
+                throw new RuntimeException("验证码错误");
+            }
+        }catch (UnknownAccountException e) {
             e.printStackTrace();
             System.out.println("用户名错误!");
         } catch (IncorrectCredentialsException e) {
@@ -67,7 +91,4 @@ public class UserController {
             return "redirect:/register.jsp";
         }
     }
-
-
-
 }
